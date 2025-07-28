@@ -18,6 +18,7 @@
                 <th>BASE</th>
                 <th>DT_BASE</th>
                 <th>DATA_IMPORT</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,13 @@
                 <td>{{ row.BASE }}</td>
                 <td>{{ row.DT_BASE }}</td>
                 <td>{{ row.DATA_IMPORT }}</td>
+                <td>
+                    {% if row.DATA_IMPORT >= row.DT_BASE %}
+                        ✔️
+                    {% else %}
+                        ❌
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
