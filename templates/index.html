@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Painel de Atualizações</title>
     <style>
-        body { font-family: Arial; margin: 40px; }
+        body { font-family: Arial, sans-serif; margin: 40px; }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
@@ -15,15 +15,17 @@
     <table>
         <thead>
             <tr>
-                <th>DH_LIGACAO</th>
+                <th>BASE</th>
+                <th>DT_BASE</th>
                 <th>DATA_IMPORT</th>
             </tr>
         </thead>
         <tbody>
             {% for row in data %}
             <tr>
-                <td>{{ row['DH_LIGACAO'] }}</td>
-                <td>{{ row['DATA_IMPORT'] }}</td>
+                <td>{{ row.BASE }}</td>
+                <td>{{ row.DT_BASE }}</td>
+                <td>{{ row.DATA_IMPORT }}</td>
             </tr>
             {% endfor %}
         </tbody>
