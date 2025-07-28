@@ -1,99 +1,212 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Painel de Atualizações</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    canvas { max-width: 100%; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portal Claro - Tecnologia Profissional</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
+
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: #fefefe;
+    overflow: hidden;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Container clean */
+  .container {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    padding: 50px 70px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    animation: fadeInUp 1s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+    border: 1.5px solid transparent;
+    transition: border-color 0.3s ease;
+    z-index: 10;
+  }
+
+  .container:hover {
+    border-color: #e60012;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 2.8rem;
+    margin-bottom: 48px;
+    color: #222;
+    letter-spacing: 0.1em;
+  }
+
+  button {
+    background: transparent;
+    border: 2.5px solid #e60012;
+    color: #e60012;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 14px 44px;
+    margin: 14px 0;
+    border-radius: 36px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      box-shadow 0.35s ease,
+      transform 0.2s ease;
+    user-select: none;
+  }
+
+  button svg {
+    fill: #e60012;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #e60012;
+    color: white;
+    box-shadow: 0 6px 14px rgba(230,0,18,0.4);
+    transform: scale(1.04);
+  }
+
+  button:hover svg {
+    fill: white;
+    transform: scale(1.2) rotate(10deg);
+  }
+
+  button:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 10px rgba(230,0,18,0.3);
+  }
+
+  /* Canvas covering full background for meteors */
+  #meteor-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* allow clicks through */
+    z-index: 1;
+    background: transparent;
+  }
+</style>
 </head>
 <body>
 
-  <h2>Atualizações da Tabela (CSV)</h2>
+<canvas id="meteor-canvas"></canvas>
 
-  <table>
-    <thead>
-      <tr>
-        <th>BASE</th>
-        <th>DT_BASE</th>
-        <th>DATA_IMPORT</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in data %}
-      <tr>
-        <td>{{ row.BASE }}</td>
-        <td>{{ row.DT_BASE }}</td>
-        <td>{{ row.DATA_IMPORT }}</td>
-        <td>
-          {% if row.DATA_IMPORT >= row.DT_BASE %}
-            ✔️
-          {% else %}
-            ❌
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container" role="main" aria-label="Menu de navegação principal">
+  <h1>PORTAL CLARO</h1>
+  <button onclick="window.location.href='/painel'" aria-label="Ir para Painel de Atualizações">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 13h8V3H3v10zm10 8h8v-6h-8v6zM3 21h8v-6H3v6zm10-18v6h8V3h-8z"/></svg>
+    Painel de Atualizações
+  </button>
+  <button onclick="window.location.href='/analise_duplicidade'" aria-label="Ir para Análise de Duplicidade">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.01 5.61 12.4 3 9 3S3 5.61 3 9s2.61 6 6 6c1.61 0 3.08-.69 4.09-1.76l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+    Análise de Duplicidade
+  </button>
+</div>
 
-  <!-- Gráfico -->
-  <h2>Gráfico de Atualizações</h2>
-  <canvas id="grafico" width="800" height="400"></canvas>
+<script>
+  const canvas = document.getElementById('meteor-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
 
-  <script>
-    // Dados passados do Flask para JavaScript
-    const data = {{ data|tojson }};
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-    // Função para converter 'dd/mm/yyyy' para dias desde 01/01/2025
-    const toDays = (dateStr) => {
-      const [day, month, year] = dateStr.split('/');
-      const date = new Date(`${year}-${month}-${day}`);
-      const ref = new Date('2025-01-01');
-      return Math.floor((date - ref) / (1000 * 60 * 60 * 24));
-    };
+  class Meteor {
+    constructor() {
+      this.reset();
+    }
 
-    const labels = data.map(row => row.BASE);
-    const dtBaseData = data.map(row => toDays(row.DT_BASE));
-    const dataImportData = data.map(row => toDays(row.DATA_IMPORT));
+    reset() {
+      this.x = Math.random() * width;
+      this.y = -10 - Math.random() * 100;
+      this.length = 15 + Math.random() * 10;
+      this.speed = 3 + Math.random() * 2;
+      this.angle = Math.PI / 4; // 45°
+      this.opacity = 0.1 + Math.random() * 0.3;
+      this.width = 1;
+    }
 
-    const ctx = document.getElementById('grafico').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'DT_BASE (dias desde 01/01/2025)',
-            data: dtBaseData,
-            backgroundColor: 'rgba(255, 99, 132, 0.6)'
-          },
-          {
-            label: 'DATA_IMPORT (dias desde 01/01/2025)',
-            data: dataImportData,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            title: {
-              display: true,
-              text: 'Dias desde 01/01/2025'
-            }
-          }
-        }
+    update() {
+      this.x += this.speed * Math.cos(this.angle);
+      this.y += this.speed * Math.sin(this.angle);
+      this.opacity -= 0.005;
+      if (this.opacity <= 0 || this.x > width || this.y > height) {
+        this.reset();
       }
+    }
+
+    draw() {
+      ctx.save();
+      ctx.beginPath();
+      const grad = ctx.createLinearGradient(this.x, this.y, this.x - this.length * Math.cos(this.angle), this.y - this.length * Math.sin(this.angle));
+      grad.addColorStop(0, `rgba(230, 0, 18, ${this.opacity})`);
+      grad.addColorStop(1, 'rgba(230, 0, 18, 0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = this.width;
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.length * Math.cos(this.angle), this.y - this.length * Math.sin(this.angle));
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  const meteors = [];
+  const meteorCount = 40;
+
+  for (let i = 0; i < meteorCount; i++) {
+    meteors.push(new Meteor());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    meteors.forEach(meteor => {
+      meteor.update();
+      meteor.draw();
     });
-  </script>
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
 
 </body>
 </html>
