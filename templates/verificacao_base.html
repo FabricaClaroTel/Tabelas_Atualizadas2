@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificação da Base</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    table {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    th {
+      background-color: #e60012;
+      color: white;
+    }
+    .feliz {
+      color: green;
+      font-size: 1.5em;
+    }
+    .triste {
+      color: red;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Verificação da Base</h1>
+  <table>
+    <tr>
+      <th>Frase</th>
+      <th>Base</th>
+      <th>Status</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+      <td>{{ row['VALIDA'] }}</td>
+      <td>{{ row['BASE'] }}</td>
+      <td class="{{ row['status'] }}">
+        {% if row['status'] == 'feliz' %}
+          🙂 Correto
+        {% else %}
+          🙁 Incorreto
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
