@@ -7,7 +7,6 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
 
-  /* Reset */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -23,7 +22,6 @@
     align-items: center;
   }
 
-  /* Container clean */
   .container {
     position: relative;
     background: #fff;
@@ -107,14 +105,13 @@
     box-shadow: 0 4px 10px rgba(230,0,18,0.3);
   }
 
-  /* Canvas covering full background for meteors */
   #meteor-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    pointer-events: none; /* allow clicks through */
+    pointer-events: none;
     z-index: 1;
     background: transparent;
   }
@@ -125,14 +122,16 @@
 <canvas id="meteor-canvas"></canvas>
 
 <div class="container" role="main" aria-label="Menu de navegação principal">
-  <h1>PORTAL CLARO</h1>
+  <h1>DADOS TELEVENDAS</h1>
+
   <button onclick="window.location.href='/painel'" aria-label="Ir para Painel de Atualizações">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 13h8V3H3v10zm10 8h8v-6h-8v6zM3 21h8v-6H3v6zm10-18v6h8V3h-8z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm10 8h8v-6h-8v6zM3 21h8v-6H3v6zm10-18v6h8V3h-8z"/></svg>
     Painel de Atualizações
   </button>
-  <button onclick="window.location.href='/analise_duplicidade'" aria-label="Ir para Análise de Duplicidade">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.01 5.61 12.4 3 9 3S3 5.61 3 9s2.61 6 6 6c1.61 0 3.08-.69 4.09-1.76l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-    Análise de Duplicidade
+
+  <button onclick="window.location.href='/verificacao_base'" aria-label="Ir para Verificação da Base">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+    Verificar Base
   </button>
 </div>
 
@@ -160,7 +159,7 @@
       this.y = -10 - Math.random() * 100;
       this.length = 15 + Math.random() * 10;
       this.speed = 3 + Math.random() * 2;
-      this.angle = Math.PI / 4; // 45°
+      this.angle = Math.PI / 4;
       this.opacity = 0.1 + Math.random() * 0.3;
       this.width = 1;
     }
