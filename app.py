@@ -4,6 +4,15 @@ import os
 
 app = Flask(__name__)
 
+CORS(app)
+
+@app.after_request
+def add_headers(response):
+    response.headers['X-Frame-Options'] = 'ALLOWALL'
+    return response
+
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
